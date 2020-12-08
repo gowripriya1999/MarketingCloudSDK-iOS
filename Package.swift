@@ -3,26 +3,21 @@
 
 import PackageDescription
 
-let package = Package(
-    name: "MarketingCloudSDK",
-    products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "MarketingCloudSDK",
-            targets: ["MarketingCloudSDK"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "MarketingCloudSDK",
-            dependencies: []),
-        .testTarget(
-            name: "MarketingCloudSDKTests",
-            dependencies: ["MarketingCloudSDK"]),
-    ]
-)
+let package = Package(name: "MarketingCloudSDK",
+                      platforms: [.macOS(.v10_12),
+                                  .iOS(.v10),
+                                  .tvOS(.v10),
+                                  .watchOS(.v3)],
+                      products: [.library(name: "MarketingCloudSDK",
+                                          targets: ["MarketingCloudSDK"])],
+                      targets: [.target(name: "MarketingCloudSDK",
+                                        path: "Source",
+                                        linkerSettings: [.linkedFramework("CFNetwork",
+                                                                          .when(platforms: [.iOS,
+                                                                                            .macOS,
+                                                                                            .tvOS,
+                                                                                            .watchOS]))]),
+                                .testTarget(name: "MarketingCloudSDKTests",
+                                            dependencies: ["MarketingCloudSDK"],
+                                            path: "Tests")],
+                      swiftLanguageVersions: [.v5])
